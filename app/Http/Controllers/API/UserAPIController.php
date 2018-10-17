@@ -4,10 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateUserAPIRequest;
 use App\Http\Requests\API\UpdateUserAPIRequest;
+use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Response;
 
+/**
+ * @group Users
+ */
 class UserAPIController extends BaseController
 {
     /**
@@ -21,6 +25,13 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * @bodyParam email email required
+     * @bodyParam name string required
+     * @bodyParam first_name string required
+     * @bodyParam last_name string required
+     * @bodyParam is_host bool
+     * @bodyParam date_of_birth date required
+     *
      * @param CreateUserAPIRequest $request
      * @return mixed
      */
@@ -48,7 +59,14 @@ class UserAPIController extends BaseController
     }
 
     /**
-     * @param $id
+     * @bodyParam email email
+     * @bodyParam name string
+     * @bodyParam first_name string
+     * @bodyParam last_name string
+     * @bodyParam is_host bool
+     * @bodyParam date_of_birth date
+     *
+     * @queryParam $id
      * @param UpdateUserAPIRequest $request
      * @return mixed
      */
@@ -81,6 +99,26 @@ class UserAPIController extends BaseController
         $user->delete();
 
         return $this->sendResponse($id, 'User deleted successfully');
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function showGuests($id)
+    {
+        $user = User::find($id);
+
+        if (empty($user)) {
+            return $this->sendError('User not found', 400);
+        }
+
+        $guests = [];
+        foreach($user->reservations as $r){
+            $guests += $r->guests->pluck('name', 'id')->toArray();
+        }
+
+        return $this->sendResponse($guests, 'Guests retrieved successfully');
     }
 
     /**

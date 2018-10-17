@@ -25,7 +25,7 @@ class UpdateUserAPIRequest extends FormRequest
     {
         return [
             'email' => 'email|unique:users,email,' . request()->route('user'),
-            'name' => 'nullable',
+            'name' => 'string',
             'first_name' => 'string',
             'last_name' => 'string',
             'is_host' => 'bool',

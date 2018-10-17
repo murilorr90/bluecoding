@@ -17,7 +17,7 @@ class CreateReservationsTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('host_id');
-            $table->foreign('host_id')->references('id')->on('users');
+            $table->foreign('host_id')->references('id')->on('users')->onDelete('CASCADE');
 
             $table->timestamps();
         });

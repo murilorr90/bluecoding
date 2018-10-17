@@ -41,9 +41,9 @@ class User extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reservation()
+    public function reservations()
     {
-        return $this->hasMany(\App\Models\Reservation::class);
+        return $this->hasMany(\App\Models\Reservation::class, 'host_id');
     }
 
     public static function getRecommendations($user, $distance = 50, $miles = true)

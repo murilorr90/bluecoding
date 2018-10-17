@@ -26,6 +26,9 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::resource('users', 'API\UserAPIController')->except(['create', 'edit']);
-    Route::resource('reservations', 'API\ReservationAPIController')->except(['create', 'edit']);
     Route::get('users/{user}/recommendations', 'API\UserAPIController@recommendations')->name('users.recommendations');
+    Route::get('users/{user}/guests', 'API\UserAPIController@showGuests')->name('users.guests');
+
+    Route::resource('reservations', 'API\ReservationAPIController')->except(['create', 'edit']);
+    Route::patch('reservations/{reservation}/guest', 'API\ReservationAPIController@addGuest')->name('reservations.guests');
 });

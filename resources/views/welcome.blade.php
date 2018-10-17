@@ -72,8 +72,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="#">Documentation</a>
-                    <a href="#">PHPUnit Code Coverage</a>
+                    <a href="{{ url('docs') }}">Documentation</a>
+                    <a href="{{ url('test-coverage') }}">PHPUnit Code Coverage</a>
                     <a href="https://github.com/murilorr90/bluecoding" target="_blank">GitHub</a>
                     <a href="{{ route('api.users.index') }}">API - Users </a>
                     <a href="{{ route('api.reservations.index') }}">API - Reservations</a>

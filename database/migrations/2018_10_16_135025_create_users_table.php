@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->boolean('is_host')->default(false);
             $table->date('date_of_birth');
-
             $table->decimal('latitude', 9, 6);
             $table->decimal('longitude', 9, 6);
 

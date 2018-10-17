@@ -4,7 +4,7 @@ namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserAPIRequest extends FormRequest
+class AddGuestReservationAPIRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,8 @@ class CreateUserAPIRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users',
-            'name' => 'required|string',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'is_host' => 'bool',
-            'date_of_birth' => 'required|date|date_format:Y-m-d'
+            'guests' => 'required|array',
+            'guests.*' => 'exists:users,id'
         ];
     }
 }

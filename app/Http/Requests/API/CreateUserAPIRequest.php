@@ -29,7 +29,7 @@ class CreateUserAPIRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'is_host' => 'bool',
-            'date_of_birth' => 'required|date'
+            'date_of_birth' => 'required|date|date_format:Y-m-d'
         ];
     }
 }

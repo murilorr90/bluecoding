@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+//Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
+//    Route::get('users', 'API\UsersApiController@list')->name('users.list');
+//    Route::post('users', 'API\UsersApiController@list')->name('users.list');
+//    Route::get('users', 'API\UsersApiController@list')->name('users.list');
+//});
+//
+
+Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
+    Route::resource('users', 'API\UserAPIController')->except(['create', 'edit']);
 });

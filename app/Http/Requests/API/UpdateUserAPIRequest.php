@@ -23,6 +23,13 @@ class UpdateUserAPIRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'email' => 'email|unique:users,email,' . request()->route('user'),
+            'name' => 'nullable',
+            'first_name' => 'string',
+            'last_name' => 'string',
+            'is_host' => 'bool',
+            'date_of_birth' => 'date|date_format:Y-m-d'
+        ];
     }
 }

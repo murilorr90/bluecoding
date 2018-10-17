@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class User extends Model
 {
@@ -43,5 +44,28 @@ class User extends Model
     public function reservation()
     {
         return $this->hasMany(\App\Models\Reservation::class);
+    }
+
+    public static function getRecommendations($user, $distance = 50, $miles = true)
+    {
+        $multiplier = $miles ? 3958.75586576104 : 6371; //Miles or Km
+
+        $raw = DB::raw('round(( '.$multiplier.' * 
+                acos( 
+                    cos( radians(' . $user->latitude . ') ) * 
+                    cos( radians( latitude ) ) * 
+                    cos( radians( longitude ) - radians(' . $user->longitude . ') ) + 
+                    sin( radians(' . $user->latitude . ') ) *
+                    sin( radians( latitude ) ) 
+                ) 
+            ),3)  as distance');
+
+        $commends = self::select('id', 'name', 'email', $raw)
+            ->where('id', '!=', $user->id)
+            ->having('distance', '<=', $distance)
+            ->orderBy('distance', 'ASC')
+            ->get();
+
+        return $commends;
     }
 }

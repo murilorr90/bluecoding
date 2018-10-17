@@ -95,24 +95,7 @@ class UserAPIController extends BaseController
             return $this->sendError('User not found');
         }
 
-        $km_multiplier = 6371;
-        $miles_multiplier = 3958.75586576104;
-
-        $raw = DB::raw('( '.$miles_multiplier.' * 
-                acos( 
-                    cos( radians(' . $user->latitude . ') ) * 
-                    cos( radians( latitude ) ) * 
-                    cos( radians( longitude ) - radians(' . $user->longitude . ') ) + 
-                    sin( radians(' . $user->latitude . ') ) *
-                    sin( radians( latitude ) ) 
-                ) 
-            )  as distance');
-
-        $commends = User::select('id', 'name', 'email', $raw)
-            ->where('id', '!=', $user->id)
-            ->having('distance', '<=', 50)
-            ->orderBy('distance', 'ASC')
-            ->get();
+        $commends = User::getRecommendations($user);
 
         return $this->sendResponse($commends, 'Recommendations retrieved successfully');
     }

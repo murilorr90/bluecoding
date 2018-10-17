@@ -2,77 +2,82 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Reservation;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
-class ReservationAPIController extends Controller
+class ReservationAPIController extends BaseController
 {
-
+    /**
+     * @return mixed
+     */
     public function index()
     {
-        $users = User::all();
+        $reservation = Reservation::with('guests:id,reservation_id,name')->get();
 
-            $ownerLatitude = '42.990967';
-            $ownerLongitude = '-71.463767';
-            $careType = 1;
-            $distance = 3;
-            $km = 6371;
-            $miles = 3958.75586576104;
-
-            $raw = DB::raw('( 6371 * 
-                acos( 
-                    cos( radians(' . $ownerLatitude . ') ) * 
-                    cos( radians( latitude ) ) * 
-                    cos( radians( longitude ) - radians(' . $ownerLongitude . ') ) + 
-                    sin( radians(' . $ownerLatitude . ') ) *
-                    sin( radians( latitude ) ) 
-                ) 
-            )  as distance');
-            $cares = DB::table('users')->select('id', $raw)
-                ->orderBy('distance', 'ASC');
-                // ->get();
-                dd($cares->toSql(), $cares->get()->pluck('distance', 'id'));
-        //->having('distance', '<=', $distance)
-
-        dd($users, $cares);
-        $reservations = Reservation::all;
-
-        return sendResponse($reservations, 'List All');
+        return $this->sendResponse($reservation->toArray(), 'Reservations retrieved successfully');
     }
 
-    public function create(CreateReservationRequest $request)
+    /**
+     * @param CreateUserAPIRequest $request
+     * @return mixed
+     */
+    public function store(CreateReservationRequest $request)
     {
         $input = $request->all();
         $reservation = Reservation::create($input);
 
-        return sendResponse($reservation, 'Reservation created successfully.');
+        return $this->sendResponse($reservation->toArray(), 'Reservation saved successfully');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id)
+    {
+        $reservation = Reservation::with('guests')->find($id);
 
+        if (empty($reservation)) {
+            return $this->sendError('Reservation not found', 400);
+        }
+
+        return $this->sendResponse($reservation->toArray(), 'Reservation retrieved successfully');
+    }
+
+    /**
+     * @param $id
+     * @param UpdateUserAPIRequest $request
+     * @return mixed
+     */
     public function update($id, UpdateReservationRequest $request)
     {
         $input = $request->all();
-        $reservation = Reservation::create($id);
+        $reservation = Reservation::find($id);
 
-        if(!$reservation){
-            return sendError('Reservation not found');
+        if (empty($reservation)) {
+            return $this->sendError('Reservation not found');
         }
 
         $reservation->update($input);
-        return sendResponse($reservation, 'Reservation created successfully.');
+
+        return $this->sendResponse($reservation->toArray(), 'Reservation updated successfully');
     }
 
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id)
     {
-        $reservation = Reservation::create($id);
+        $reservation = Reservation::find($id);
 
-        if(!$reservation){
-            return sendError('Reservation not found');
+        if (empty($reservation)) {
+            return $this->sendError('Reservation not found');
         }
 
         $reservation->delete();
-        return sendResponse($reservation, 'Reservation created successfully.');
+
+        return $this->sendResponse($id, 'Reservation deleted successfully');
     }
 }

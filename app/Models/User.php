@@ -36,5 +36,12 @@ class User extends Model
         'is_host' => 'boolean',
         'date_of_birth' => 'date'
     ];
-    
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reservation()
+    {
+        return $this->hasMany(\App\Models\Reservation::class);
+    }
 }

@@ -23,5 +23,20 @@ class Reservation extends Model
     protected $casts = [
         'host_id' => 'integer',
     ];
-    
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function host()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function guests()
+    {
+        return $this->hasMany(\App\Models\User::class);
+    }
 }

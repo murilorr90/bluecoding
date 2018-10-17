@@ -24,7 +24,8 @@ use Illuminate\Http\Request;
 //});
 //
 
-Route::group(['prefix' => 'v1', 'as' => 'v1.'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::resource('users', 'API\UserAPIController')->except(['create', 'edit']);
     Route::resource('reservations', 'API\ReservationAPIController')->except(['create', 'edit']);
+    Route::get('users/{user}/recommendations', 'API\UserAPIController@recommendations');
 });

@@ -17,7 +17,9 @@ class User extends Model
         'first_name',
         'last_name',
         'is_host',
-        'date_of_birth'
+        'date_of_birth',
+        'latitude',
+        'longitude'
     ];
 
     /**
@@ -26,9 +28,9 @@ class User extends Model
      * @var array
      */
     protected $casts = [
+        'id' => 'integer',
         'name' => 'string',
         'email' => 'string',
-        'id' => 'integer',
         'first_name' => 'string',
         'last_name' => 'string',
         'is_host' => 'boolean',

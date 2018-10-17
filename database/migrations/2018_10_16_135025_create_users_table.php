@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            
+            $table->unsignedInteger('reservation_id')->nullable();
 
             $table->string('email')->unique();
             $table->string('name');
@@ -22,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->boolean('is_host')->default(false);
             $table->date('date_of_birth');
+
+            $table->decimal('latitude', 9, 6);
+            $table->decimal('longitude', 9, 6);
 
             $table->timestamps();
         });

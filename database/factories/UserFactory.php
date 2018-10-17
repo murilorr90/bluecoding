@@ -22,6 +22,8 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'first_name' => $first_name,
         'last_name' => $last_name,
         'is_host' => $faker->boolean,
-        'date_of_birth' => $faker->date('Y-m-d')
+        'date_of_birth' => $faker->date('Y-m-d'),
+        'latitude' => $faker->latitude(-25,-30),
+        'longitude' => $faker->longitude(-45,-50)
     ];
 });

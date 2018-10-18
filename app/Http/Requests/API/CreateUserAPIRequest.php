@@ -29,7 +29,9 @@ class CreateUserAPIRequest extends FormRequest
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'is_host' => 'bool',
-            'date_of_birth' => 'required|date|date_format:Y-m-d'
+            'date_of_birth' => 'required|date',
+            'latitude' => 'regex:/^-?\d{1,2}\.\d{1,6}$/',
+            'longitude' => 'regex:/^-?\d{1,2}\.\d{1,6}$/'
         ];
     }
 }

@@ -46,6 +46,12 @@ class User extends Model
         return $this->hasMany(\App\Models\Reservation::class, 'host_id');
     }
 
+    /**
+     * @param $user
+     * @param int $distance
+     * @param bool $miles
+     * @return mixed
+     */
     public static function getRecommendations($user, $distance = 50, $miles = true)
     {
         $multiplier = $miles ? 3958.75586576104 : 6371; //Miles or Km

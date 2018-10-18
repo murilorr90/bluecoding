@@ -48,20 +48,22 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if($exception instanceof ValidationException && in_array( 'api', request()->route()->middleware())) {
-            return response()->json([
-                'success' => false,
-                'code' => 400,
-                'message' => implode(" ", $exception->validator->errors()->all())
-            ], 400);
-        }
+        if(in_array( 'api', request()->route()->middleware())){
+            if($exception instanceof ValidationException) {
+                return response()->json([
+                    'success' => false,
+                    'code' => 400,
+                    'message' => implode(" ", $exception->validator->errors()->all())
+                ], 400);
+            }
 
-        if ($exception) {
-            return response()->json([
-                'success' => false,
-                'code' => $exception->getStatusCode(),
-                'message' => $exception->getMessage() ? : class_basename($exception),
-            ], $exception->getStatusCode());
+            if ($exception) {
+                return response()->json([
+                    'success' => false,
+                    'code' => $exception->getStatusCode(),
+                    'message' => $exception->getMessage() ? : class_basename($exception),
+                ], $exception->getStatusCode());
+            }
         }
 
         return parent::render($request, $exception);

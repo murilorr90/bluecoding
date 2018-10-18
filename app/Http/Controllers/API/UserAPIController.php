@@ -15,6 +15,8 @@ use Response;
 class UserAPIController extends BaseController
 {
     /**
+     * List Users
+     *
      * @return mixed
      */
     public function index()
@@ -25,6 +27,8 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * Create User
+     *
      * @bodyParam email email required
      * @bodyParam name string required
      * @bodyParam first_name string required
@@ -44,6 +48,8 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * Show User
+     *
      * @param $id
      * @return mixed
      */
@@ -51,14 +57,15 @@ class UserAPIController extends BaseController
     {
         $user = User::find($id);
 
-        if (empty($user)) {
+        if (empty($user))
             return $this->sendError('User not found', 400);
-        }
 
         return $this->sendResponse($user->toArray(), 'User retrieved successfully');
     }
 
     /**
+     * Update User
+     *
      * @bodyParam email email
      * @bodyParam name string
      * @bodyParam first_name string
@@ -75,9 +82,8 @@ class UserAPIController extends BaseController
         $input = $request->all();
         $user = User::find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
+        if (empty($user))
+            return $this->sendError('User not found', 400);
 
         $user->update($input);
 
@@ -85,6 +91,8 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * Delete User
+     *
      * @param $id
      * @return mixed
      */
@@ -92,9 +100,8 @@ class UserAPIController extends BaseController
     {
         $user = User::find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
+        if (empty($user))
+            return $this->sendError('User not found', 400);
 
         $user->delete();
 
@@ -102,6 +109,8 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * Show All Guests
+     *
      * @param $id
      * @return mixed
      */
@@ -109,9 +118,8 @@ class UserAPIController extends BaseController
     {
         $user = User::find($id);
 
-        if (empty($user)) {
+        if (empty($user))
             return $this->sendError('User not found', 400);
-        }
 
         $guests = [];
         foreach($user->reservations as $r){
@@ -122,6 +130,8 @@ class UserAPIController extends BaseController
     }
 
     /**
+     * Show All Recommendations
+     *
      * @param $id
      * @return mixed
      */
@@ -129,9 +139,8 @@ class UserAPIController extends BaseController
     {
         $user = User::find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
+        if (empty($user))
+            return $this->sendError('User not found', 400);
 
         $commends = User::getRecommendations($user);
 

@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\DB;
 class ReservationAPIController extends BaseController
 {
     /**
+     * List Reservations
+     *
      * @return mixed
+     *
      */
     public function index()
     {
@@ -26,6 +29,8 @@ class ReservationAPIController extends BaseController
     }
 
     /**
+     * Create Reservation
+     *
      * @bodyParam host_id int required
      * @bodyParam guests array required
      *
@@ -35,6 +40,11 @@ class ReservationAPIController extends BaseController
     public function store(CreateReservationAPIRequest $request)
     {
         $input = $request->all();
+
+        $user = User::find($input['host_id']);
+
+        if (!$user->is_host)
+            return $this->sendError('User is not a host', 400);
 
         $reservation = DB::transaction(function () use($input) {
             $reservation = Reservation::create($input);
@@ -51,6 +61,8 @@ class ReservationAPIController extends BaseController
     }
 
     /**
+     * Show Reservation
+     *
      * @param $id
      * @return mixed
      */
@@ -58,14 +70,34 @@ class ReservationAPIController extends BaseController
     {
         $reservation = Reservation::with('guests')->find($id);
 
-        if (empty($reservation)) {
+        if (empty($reservation))
             return $this->sendError('Reservation not found', 400);
-        }
 
         return $this->sendResponse($reservation->toArray(), 'Reservation retrieved successfully');
     }
 
     /**
+     * Delete Reservation
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function destroy($id)
+    {
+        $reservation = Reservation::find($id);
+
+        if (empty($reservation))
+            return $this->sendError('Reservation not found', 400);
+
+        $reservation->delete();
+
+        return $this->sendResponse($id, 'Reservation deleted successfully');
+    }
+
+
+    /**
+     * Add Guest to Reservation
+     *
      * @bodyParam guests array required
      *
      * @param $id
@@ -74,13 +106,11 @@ class ReservationAPIController extends BaseController
      */
     public function addGuest($id, AddGuestReservationAPIRequest $request)
     {
-        $guests = $request->get();
-        dd($id,$guests);
+        $guests = $request->get('guests');
         $reservation = Reservation::find($id);
 
-        if (empty($reservation)) {
-            return $this->sendError('Reservation not found');
-        }
+        if (empty($reservation))
+            return $this->sendError('Reservation not found', 400);
 
         foreach($guests as $guest){
             $user = User::find($guest);
@@ -89,22 +119,5 @@ class ReservationAPIController extends BaseController
         }
 
         return $this->sendResponse($reservation->toArray(), 'Guests added successfully');
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function destroy($id)
-    {
-        $reservation = Reservation::find($id);
-
-        if (empty($reservation)) {
-            return $this->sendError('Reservation not found');
-        }
-
-        $reservation->delete();
-
-        return $this->sendResponse($id, 'Reservation deleted successfully');
     }
 }

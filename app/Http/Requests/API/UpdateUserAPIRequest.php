@@ -29,7 +29,9 @@ class UpdateUserAPIRequest extends FormRequest
             'first_name' => 'string',
             'last_name' => 'string',
             'is_host' => 'bool',
-            'date_of_birth' => 'date|date_format:Y-m-d'
+            'date_of_birth' => 'date',
+            'latitude' => 'regex:/^-?\d{1,2}\.\d{1,6}$/',
+            'longitude' => 'regex:/^-?\d{1,2}\.\d{1,6}$/'
         ];
     }
 }

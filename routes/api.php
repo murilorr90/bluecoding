@@ -25,10 +25,18 @@ use Illuminate\Http\Request;
 //
 
 Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
-    Route::resource('users', 'API\UserAPIController')->except(['create', 'edit']);
-    Route::get('users/{user}/recommendations', 'API\UserAPIController@recommendations')->name('users.recommendations');
+    Route::get('users', 'API\UserAPIController@index')->name('users.index');
+    Route::post('users', 'API\UserAPIController@store')->name('users.store');
+    Route::get('users/{user}', 'API\UserAPIController@show')->name('users.show');
+    Route::patch('users/{user}', 'API\UserAPIController@update')->name('users.update');
+    Route::delete('users/{user}', 'API\UserAPIController@destroy')->name('users.destroy');
     Route::get('users/{user}/guests', 'API\UserAPIController@showGuests')->name('users.guests');
+    Route::get('users/{user}/recommendations', 'API\UserAPIController@recommendations')->name('users.recommendations');
 
-    Route::resource('reservations', 'API\ReservationAPIController')->except(['create', 'edit']);
-    Route::patch('reservations/{reservation}/guest', 'API\ReservationAPIController@addGuest')->name('reservations.guests');
+
+    Route::get('reservations', 'API\ReservationAPIController@index')->name('reservations.index');
+    Route::post('reservations', 'API\ReservationAPIController@store')->name('reservations.store');
+    Route::get('reservations/{reservation}', 'API\ReservationAPIController@show')->name('reservations.show');
+    Route::delete('reservations/{reservation}', 'API\ReservationAPIController@destroy')->name('reservations.destroy');
+    Route::patch('reservations/{reservation}/add-guest', 'API\ReservationAPIController@addGuest')->name('reservations.add');
 });

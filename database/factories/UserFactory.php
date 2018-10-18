@@ -23,7 +23,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'last_name' => $last_name,
         'is_host' => $faker->boolean,
         'date_of_birth' => $faker->date('Y-m-d'),
-        'latitude' => $faker->latitude(-25,-30),
-        'longitude' => $faker->longitude(-45,-50)
+        'latitude' => $faker->latitude(-25,-30), // short diff to 50 miles
+        'longitude' => $faker->longitude(-45,-50) // short diff to 50 miles
     ];
 });

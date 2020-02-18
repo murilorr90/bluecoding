@@ -1,10 +1,8 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-Hi, this a test for the bluecoding company from Murilo Rocha. :)
-
 ## Commands
 
-- git clone [https://github.com/murilorr90/bluecoding.git](https://github.com/murilorr90/bluecoding.git)
+- git clone [https://github.com/murilorr90/userReservationApp.git](https://github.com/murilorr90/userReservationApp.git)
 - composer install
 - vendor/bin/homestead make
 - vagrant up
